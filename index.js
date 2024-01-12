@@ -1,6 +1,6 @@
 const express = require("express")
 const userRouter = require("./routes/user.js");
-const departmentsRouter = require("")
+const departmentsRouter = require("./routes/department.rouets.js")
 
 const { config } = require("dotenv");
 const cookieParser = require("cookie-parser");
