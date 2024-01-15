@@ -33,8 +33,10 @@ exports.register = async (req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
 
-        user = await User.create({ name, email, password: hashedPassword, ismanage: true });
-        sendCookie(user, res, "Registered Successfully", 201);
+        user = await User.create({ name, email, password: hashedPassword, ismanager: true });
+        const formatedUser = { name: user.name, email: user.email, ismanager: user.ismanager, date: user.createdAt, _id: user._id }
+
+        sendCookie(formatedUser, res, "Registered Successfully", 201);
     } catch (error) {
         next(error)
     }
@@ -50,7 +52,8 @@ exports.login = async (req, res, next) => {
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return next(new ErrorHandler("Invalid Email or Password", 400));
-        sendCookie(user, res, `Welcome back, ${user.name}`, 200)
+        const formatedUser = { name: user.name, email: user.email, ismanager: user.ismanager, date: user.createdAt, _id: user._id }
+        sendCookie(formatedUser, res, `Welcome back, ${user.name}`, 200)
 
     } catch (error) {
         next(error)
