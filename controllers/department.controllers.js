@@ -4,9 +4,10 @@ const Department = require("../models/department");
 // Create a department
 exports.createDepartment = async (req, res, next) => {
     try {
-        const { name, description } = req.body;
+        const { name } = req.body;
+        console.log(name)
         if (!name) return next(new ErrorHandler("Name is Required", 400));
-        const department = new Department({ name, description });
+        const department = new Department({ name });
         const savedDepartment = await department.save();
 
         res.status(201).json({
@@ -24,7 +25,12 @@ exports.createDepartment = async (req, res, next) => {
 
 exports.getDepartments = async (req, res) => {
     try {
-        const departments = await Department.find();
+
+        const departments = await Department.find().populate({
+            path: 'employees',
+            select: '-password', // Exclude the password field
+        });
+
 
         res.status(200).json({
             success: true,
@@ -36,14 +42,14 @@ exports.getDepartments = async (req, res) => {
             error: error.message,
         });
     }
-}
+};
 
 exports.updateDepartment = async (req, res) => {
     try {
-        const { name, description } = req.body;
+        const { name, _id } = req.body;
         const updatedDepartment = await Department.findByIdAndUpdate(
-            req.params.id,
-            { name, description },
+            _id,
+            { name },
             { new: true }
         );
 

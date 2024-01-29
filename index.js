@@ -32,7 +32,7 @@ connectDB();
 
 //using routes
 app.use("/api/v1/users", userRouter);
-app.use('api/v1/departments', departmentsRouter);
+app.use('/api/v1/departments', departmentsRouter);
 
 
 app.get("/", (req, res) => {

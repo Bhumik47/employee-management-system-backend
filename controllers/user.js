@@ -7,8 +7,8 @@ const Department = require("../models/department.js");
 
 exports.getAllUsers = async (req, res) => {
     try {
-        // Fetch all users where ismanager is false
-        const users = await User.find({ ismanager: false });
+        // Fetch all users where ismanager is false, and populate the 'department' field to get the department name
+        const users = await User.find({ ismanager: false }).populate('department', 'name');
 
         res.status(200).json({
             success: true,
@@ -88,8 +88,8 @@ exports.logout = (req, res) => {
 
 exports.createUser = async (req, res) => {
     try {
-        const { name, email, password, salary, department, address } = req.body;
-
+        const { name, email, password, salary, deparcd backtment, address } = req.body;
+        console.log(req.body)
         // Hash the password before saving it to the database
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -107,6 +107,7 @@ exports.createUser = async (req, res) => {
         res.status(201).json({
             success: true,
             data: savedUser,
+            message:"Employee Added Successfully"
         });
     } catch (error) {
         res.status(500).json({
@@ -119,11 +120,10 @@ exports.createUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
     try {
-        const { name, email, salary, department, address } = req.body;
+        const { name, email, salary, department, address, _id } = req.body;
 
         // Find the user before the update
-        const userBeforeUpdate = await User.findById(req.params.id);
-
+        const userBeforeUpdate = await User.findById(_id);
         // Check if the department ID has changed
         if (userBeforeUpdate.department.toString() !== department) {
             // Remove the user from the previous department's employees array
@@ -140,7 +140,7 @@ exports.updateUser = async (req, res) => {
         }
 
         const updatedUser = await User.findByIdAndUpdate(
-            req.params.id,
+            _id,
             { name, email, salary, department, address },
             { new: true }
         );
@@ -152,7 +152,7 @@ exports.updateUser = async (req, res) => {
             });
         }
 
-        res.status(200).json({
+        res.status(201).json({
             success: true,
             data: updatedUser,
             message: "User updated successfully",
@@ -194,7 +194,7 @@ exports.deleteUser = async (req, res) => {
 
 exports.getNonManagers = async (req, res) => {
     try {
-        const { sortBy, sortOrder } = req.query;
+        const { sortBy, sortOrder } = req.body;
 
         const sortOptions = {};
         if (sortBy && ['name', 'address'].includes(sortBy)) {
