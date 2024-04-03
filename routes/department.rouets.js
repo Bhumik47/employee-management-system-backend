@@ -1,5 +1,10 @@
 const express = require("express");
-const { createDepartment, getDepartments, updateDepartment, deleteDepartment } = require("../controllers/department.controllers");
+const {
+  createDepartment,
+  getDepartments,
+  updateDepartment,
+  deleteDepartment,
+} = require("../controllers/department.controllers");
 
 const router = express.Router();
 
