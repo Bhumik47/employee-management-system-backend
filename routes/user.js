@@ -14,7 +14,7 @@ const { isAuthenticated } = require("../middlewares/Auth.js");
 
 const router = express.Router();
 
-router.get("/all", getAllUsers);
+router.get("/all", isAuthenticated, getAllUsers);
 
 router.post("/new", register);
 router.post("/login", login);
