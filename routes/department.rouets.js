@@ -5,13 +5,12 @@ const {
   updateDepartment,
   deleteDepartment,
 } = require("../controllers/department.controllers");
-const { isAuthenticated } = require("../middlewares/Auth");
 
 const router = express.Router();
 
-router.post("/create", isAuthenticated, createDepartment);
-router.get("/get", isAuthenticated, getDepartments);
-router.put("/update", isAuthenticated, updateDepartment);
-router.delete("/delete/:id", isAuthenticated, deleteDepartment);
+router.post("/create", createDepartment);
+router.get("/get", getDepartments);
+router.put("/update", updateDepartment);
+router.delete("/delete/:id", deleteDepartment);
 
 module.exports = router;

@@ -10,24 +10,22 @@ const {
   deleteUser,
   getNonManagers,
 } = require("../controllers/user.js");
-const { isAuthenticated } = require("../middlewares/Auth.js");
-
 const router = express.Router();
 
-router.get("/all", isAuthenticated, getAllUsers);
+router.get("/all", getAllUsers);
 
 router.post("/new", register);
 router.post("/login", login);
 
-router.get("/me", isAuthenticated, getMyProfile);
+router.get("/me", getMyProfile);
 router.get("/logout", logout);
 
 //manager crud
-router.post("/create", isAuthenticated, createUser);
-router.put("/update", isAuthenticated, updateUser);
-router.delete("/delete/:id", isAuthenticated, deleteUser);
+router.post("/create", createUser);
+router.put("/update", updateUser);
+router.delete("/delete/:id", deleteUser);
 
 //filter employees
-router.post("/filter", isAuthenticated, getNonManagers);
+router.post("/filter", getNonManagers);
 
 module.exports = router;
